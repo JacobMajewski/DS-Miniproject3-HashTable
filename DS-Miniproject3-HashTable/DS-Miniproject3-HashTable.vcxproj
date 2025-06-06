@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -127,7 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AVL_tree.cpp" />
     <ClCompile Include="DS-Miniproject3-HashTable.cpp" />
+    <ClCompile Include="HashTable_AVL.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AVL_tree.hpp" />
+    <ClInclude Include="HashTable.hpp" />
+    <ClInclude Include="HashTable_AVL.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
