@@ -13,14 +13,11 @@ HashTable_AVL::~HashTable_AVL()
 void HashTable_AVL::reinsert_nodes(Node* node, AVLTree* new_table, size_t new_capacity) {
     if (!node) return;
 
-    // Rekurencyjne przegl¹danie lewego poddrzewa
     reinsert_nodes(node->left.get(), new_table, new_capacity);
 
-    // Wstawienie bie¿¹cego wêz³a do nowej tablicy
     size_t new_index = hash(node->key) % new_capacity;
     new_table[new_index].insert(node->key, node->value);
 
-    // Rekurencyjne przegl¹danie prawego poddrzewa
     reinsert_nodes(node->right.get(), new_table, new_capacity);
 }
 
@@ -28,12 +25,12 @@ void HashTable_AVL::resize(int targetCapacity)
 {
     AVLTree* new_table = new AVLTree[targetCapacity];
 
-    // Przenoszenie elementów
+    // 'moving things to new table
     for (size_t i = 0; i < capacity; i++) {
         reinsert_nodes(table[i].root.get(), new_table, targetCapacity);
     }
 
-    // Aktualizacja struktury
+    // update structure
     delete[] table;
     table = new_table;
     capacity = targetCapacity;

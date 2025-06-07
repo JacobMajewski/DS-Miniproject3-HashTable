@@ -1,6 +1,6 @@
 #include "AVL_tree.hpp"
 #include <algorithm>
-// Metody prywatne
+
 int AVLTree::height(const Node* node) const {
     return node ? node->height : 0;
 }
@@ -39,7 +39,7 @@ std::unique_ptr<Node> AVLTree::balance(std::unique_ptr<Node> node) {
     update_height(*node);
     int bf = balance_factor(*node);
 
-    // Lewa nierównowaga
+    // Left is too hight for its own good
     if (bf > 1) {
         if (balance_factor(*node->left) < 0) {
             node->left = rotate_left(std::move(node->left));
@@ -47,7 +47,7 @@ std::unique_ptr<Node> AVLTree::balance(std::unique_ptr<Node> node) {
         return rotate_right(std::move(node));
     }
 
-    // Prawa nierównowaga
+    // same but right
     if (bf < -1) {
         if (balance_factor(*node->right) > 0) {
             node->right = rotate_right(std::move(node->right));
@@ -70,7 +70,6 @@ std::unique_ptr<Node> AVLTree::insert(std::unique_ptr<Node> node, int key, int v
         node->right = insert(std::move(node->right), key, value);
     }
     else {
-        // Aktualizacja wartoœci dla istniej¹cego klucza
         node->value = value;
         return node;
     }
@@ -93,15 +92,14 @@ std::unique_ptr<Node> AVLTree::remove(std::unique_ptr<Node> node, int key, bool&
             return node->left ? std::move(node->left) : std::move(node->right);
         }
 
-        // ZnajdŸ nastêpnik (minimalny w prawym poddrzewie)
+        // heir would be funnier :c
         Node* successor = node->right.get();
         while (successor->left) successor = successor->left.get();
 
-        // Skopiuj dane nastêpnika
         node->key = successor->key;
         node->value = successor->value;
 
-        // Usuñ nastêpnika
+        // prince is dead, long live prince?
         bool dummy;
         node->right = remove(std::move(node->right), successor->key, dummy);
     }
@@ -133,7 +131,7 @@ std::unique_ptr<Node>* AVLTree::find_node(std::unique_ptr<Node>* node_ptr, int k
         return find_node(&(current_node->right), key);
     }
 }
-// Metody publiczne
+// public
 void AVLTree::insert(int key, int value) {
     root = insert(std::move(root), key, value);
 }

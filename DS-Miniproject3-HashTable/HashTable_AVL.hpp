@@ -1,6 +1,6 @@
 #pragma once
 #include "HashTable.hpp"
-// wyodrêbniono implementacje AVL w celu poprawienia czytelnoœci!
+// AVL tree to make it more readable!
 #include "AVL_tree.hpp"
 class HashTable_AVL :
     public HashTable

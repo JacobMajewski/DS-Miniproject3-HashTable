@@ -1,11 +1,11 @@
 #pragma once
 #include <memory>
 struct Node {
-    int key;        // Key
-    int value;      // Val
+    int key;        
+    int value;      
     std::unique_ptr<Node> left;
     std::unique_ptr<Node> right;
-    int height;     // height of subtree
+    int height;     
 
     Node(int k, int v) : key(k), value(v), left(nullptr), right(nullptr), height(1) {}
 };
