@@ -1,18 +1,19 @@
 #pragma once
 #include <memory>
+struct Node {
+    int key;        // Key
+    int value;      // Val
+    std::unique_ptr<Node> left;
+    std::unique_ptr<Node> right;
+    int height;     // height of subtree
+
+    Node(int k, int v) : key(k), value(v), left(nullptr), right(nullptr), height(1) {}
+};
 class AVLTree
 {
 private :
-    struct Node {
-        int key;        // Key
-        int value;      // Val
-        std::unique_ptr<Node> left;
-        std::unique_ptr<Node> right;
-        int height;     // height of subtree
-
-        Node(int k, int v) : key(k), value(v), left(nullptr), right(nullptr), height(0) {}
-    };
-    std::unique_ptr<Node> root;
+    
+    
     // helpers
     int height(const Node* node) const;
     void update_height(Node& node);
@@ -27,7 +28,7 @@ private :
     bool contains(const Node* node, int key) const;
     std::unique_ptr<Node>* find_node(std::unique_ptr<Node>* node, int key);
 public:
-    
+    std::unique_ptr<Node> root;
 
     // Interfejs publiczny
      void insert(int key, int value);

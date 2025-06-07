@@ -13,7 +13,7 @@ int AVLTree::balance_factor(const Node& node) const {
     return height(node.left.get()) - height(node.right.get());
 }
 
-std::unique_ptr<AVLTree::Node> AVLTree::rotate_right(std::unique_ptr<Node> y) {
+std::unique_ptr<Node> AVLTree::rotate_right(std::unique_ptr<Node> y) {
     std::unique_ptr<Node> x = std::move(y->left);
     y->left = std::move(x->right);
     x->right = std::move(y);
@@ -24,7 +24,7 @@ std::unique_ptr<AVLTree::Node> AVLTree::rotate_right(std::unique_ptr<Node> y) {
     return x;
 }
 
-std::unique_ptr<AVLTree::Node> AVLTree::rotate_left(std::unique_ptr<Node> x) {
+std::unique_ptr<Node> AVLTree::rotate_left(std::unique_ptr<Node> x) {
     std::unique_ptr<Node> y = std::move(x->right);
     x->right = std::move(y->left);
     y->left = std::move(x);
@@ -35,7 +35,7 @@ std::unique_ptr<AVLTree::Node> AVLTree::rotate_left(std::unique_ptr<Node> x) {
     return y;
 }
 
-std::unique_ptr<AVLTree::Node> AVLTree::balance(std::unique_ptr<Node> node) {
+std::unique_ptr<Node> AVLTree::balance(std::unique_ptr<Node> node) {
     update_height(*node);
     int bf = balance_factor(*node);
 
@@ -58,7 +58,7 @@ std::unique_ptr<AVLTree::Node> AVLTree::balance(std::unique_ptr<Node> node) {
     return node;
 }
 
-std::unique_ptr<AVLTree::Node> AVLTree::insert(std::unique_ptr<Node> node, int key, int value) {
+std::unique_ptr<Node> AVLTree::insert(std::unique_ptr<Node> node, int key, int value) {
     if (!node) {
         return std::make_unique<Node>(key, value);
     }
@@ -78,7 +78,7 @@ std::unique_ptr<AVLTree::Node> AVLTree::insert(std::unique_ptr<Node> node, int k
     return balance(std::move(node));
 }
 
-std::unique_ptr<AVLTree::Node> AVLTree::remove(std::unique_ptr<Node> node, int key, bool& found) {
+std::unique_ptr<Node> AVLTree::remove(std::unique_ptr<Node> node, int key, bool& found) {
     if (!node) return nullptr;
 
     if (key < node->key) {
@@ -116,6 +116,23 @@ bool AVLTree::contains(const Node* node, int key) const {
     return contains(node->right.get(), key);
 }
 
+std::unique_ptr<Node>* AVLTree::find_node(std::unique_ptr<Node>* node_ptr, int key) {
+    if (!node_ptr || !*node_ptr) {
+        return nullptr;
+    }
+
+    Node* current_node = node_ptr->get();
+
+    if (key == current_node->key) {
+        return node_ptr;
+    }
+    else if (key < current_node->key) {
+        return find_node(&(current_node->left), key);
+    }
+    else {
+        return find_node(&(current_node->right), key);
+    }
+}
 // Metody publiczne
 void AVLTree::insert(int key, int value) {
     root = insert(std::move(root), key, value);
