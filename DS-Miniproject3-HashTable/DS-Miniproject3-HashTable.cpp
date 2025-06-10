@@ -39,18 +39,15 @@ TestData generateTestData(int size) {
     return data;
 }
 
-long long averageInsertTime_Open(int size, const TestData& data, int prefill, int to_insert) {
+long long averageInsertTime_Open(int size, const TestData& data, int prefill) {
     long long total_time = 0;
     for (int t = 0; t < NUM_TESTS; ++t) {
         HashOpenAddressing table(size);
-        for (int i = 0; i < prefill; ++i) {
+        for (int i = 0; i < prefill; ++i)
             table.insert(data.keys[i], data.values[i]);
-        }
 
         auto start = high_resolution_clock::now();
-        for (int i = 0; i < to_insert; ++i) {
-            table.insert(data.keys[prefill + i], data.values[prefill + i]);
-        }
+        table.insert(data.keys[prefill], data.values[prefill]);
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
@@ -61,33 +58,26 @@ long long averageRemoveTime_Open(int size, const TestData& data, int prefill) {
     long long total_time = 0;
     for (int t = 0; t < NUM_TESTS; ++t) {
         HashOpenAddressing table(size);
-        for (int i = 0; i < prefill; ++i) {
+        for (int i = 0; i < prefill; ++i)
             table.insert(data.keys[i], data.values[i]);
-        }
 
         auto start = high_resolution_clock::now();
-        for (int i = 0; i < prefill; ++i) {
-            table.remove(data.keys[i]);
-        }
+        table.remove(data.keys[prefill - 1]);
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
     return total_time / NUM_TESTS;
 }
 
-
-long long averageInsertTime_Chain(int size, const TestData& data, int prefill, int to_insert) {
+long long averageInsertTime_Chain(int size, const TestData& data, int prefill) {
     long long total_time = 0;
     for (int t = 0; t < NUM_TESTS; ++t) {
         HashChain table(size);
-        for (int i = 0; i < prefill; ++i) {
+        for (int i = 0; i < prefill; ++i)
             table.insert(data.keys[i], data.values[i]);
-        }
 
         auto start = high_resolution_clock::now();
-        for (int i = 0; i < to_insert; ++i) {
-            table.insert(data.keys[prefill + i], data.values[prefill + i]);
-        }
+        table.insert(data.keys[prefill], data.values[prefill]);
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
@@ -98,33 +88,26 @@ long long averageRemoveTime_Chain(int size, const TestData& data, int prefill) {
     long long total_time = 0;
     for (int t = 0; t < NUM_TESTS; ++t) {
         HashChain table(size);
-        for (int i = 0; i < prefill; ++i) {
+        for (int i = 0; i < prefill; ++i)
             table.insert(data.keys[i], data.values[i]);
-        }
 
         auto start = high_resolution_clock::now();
-        for (int i = 0; i < prefill; ++i) {
-            table.remove(data.keys[i]);
-        }
+        table.remove(data.keys[prefill - 1]);
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
     return total_time / NUM_TESTS;
 }
 
-
-long long averageInsertTime_AVL(int size, const TestData& data, int prefill, int to_insert) {
+long long averageInsertTime_AVL(int size, const TestData& data, int prefill) {
     long long total_time = 0;
     for (int t = 0; t < NUM_TESTS; ++t) {
         HashTable_AVL table(size);
-        for (int i = 0; i < prefill; ++i) {
+        for (int i = 0; i < prefill; ++i)
             table.insert(data.keys[i], data.values[i]);
-        }
 
         auto start = high_resolution_clock::now();
-        for (int i = 0; i < to_insert; ++i) {
-            table.insert(data.keys[prefill + i], data.values[prefill + i]);
-        }
+        table.insert(data.keys[prefill], data.values[prefill]);
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
@@ -135,14 +118,11 @@ long long averageRemoveTime_AVL(int size, const TestData& data, int prefill) {
     long long total_time = 0;
     for (int t = 0; t < NUM_TESTS; ++t) {
         HashTable_AVL table(size);
-        for (int i = 0; i < prefill; ++i) {
+        for (int i = 0; i < prefill; ++i)
             table.insert(data.keys[i], data.values[i]);
-        }
 
         auto start = high_resolution_clock::now();
-        for (int i = 0; i < prefill; ++i) {
-            table.remove(data.keys[i]);
-        }
+        table.remove(data.keys[prefill - 1]);
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
@@ -151,28 +131,20 @@ long long averageRemoveTime_AVL(int size, const TestData& data, int prefill) {
 
 int main() {
     for (int size : TEST_SIZES) {
-        TestData data = generateTestData(static_cast<int>(size * 1.1));
+        TestData data = generateTestData(static_cast<int>(size * 1.1)); // większy zapas danych
 
         for (double fill : FILL_PERCENTAGES) {
             int prefill = static_cast<int>(size * fill);
-            if (prefill < 1 && fill > 0.0) prefill = 1;
-            if (prefill > size) prefill = size;
+            if (prefill < 1) prefill = 1;
+            if (prefill + 1 >= (int)data.keys.size()) continue;
 
-            int to_insert = max(1, static_cast<int>(size * 0.01));
-            if (prefill + to_insert > size) to_insert = size - prefill;
-            if (to_insert <= 0) to_insert = 0;
-
-
-            if (to_insert > 0)
-                cout << "OpenAddressing;" << size << ";" << fill * 100 << "%;insert;" << averageInsertTime_Open(size, data, prefill, to_insert) << "\n";
+            cout << "OpenAddressing;" << size << ";" << fill * 100 << "%;insert;" << averageInsertTime_Open(size, data, prefill) << "\n";
             cout << "OpenAddressing;" << size << ";" << fill * 100 << "%;remove;" << averageRemoveTime_Open(size, data, prefill) << "\n";
 
-            if (to_insert > 0)
-                cout << "Chaining;" << size << ";" << fill * 100 << "%;insert;" << averageInsertTime_Chain(size, data, prefill, to_insert) << "\n";
+            cout << "Chaining;" << size << ";" << fill * 100 << "%;insert;" << averageInsertTime_Chain(size, data, prefill) << "\n";
             cout << "Chaining;" << size << ";" << fill * 100 << "%;remove;" << averageRemoveTime_Chain(size, data, prefill) << "\n";
 
-            if (to_insert > 0)
-                cout << "AVL;" << size << ";" << fill * 100 << "%;insert;" << averageInsertTime_AVL(size, data, prefill, to_insert) << "\n";
+            cout << "AVL;" << size << ";" << fill * 100 << "%;insert;" << averageInsertTime_AVL(size, data, prefill) << "\n";
             cout << "AVL;" << size << ";" << fill * 100 << "%;remove;" << averageRemoveTime_AVL(size, data, prefill) << "\n";
         }
     }
