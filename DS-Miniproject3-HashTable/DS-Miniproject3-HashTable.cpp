@@ -54,7 +54,7 @@ int main() {
         TestData data = generateTestData(size);
 
         {
-            HashOpenAddressing table;
+            HashOpenAddressing table(size); 
             auto insertTime = measureAverageTime([&]() {
                 for (int i = 0; i < size; ++i)
                     table.insert(data.keys[i], data.values[i]);
@@ -70,9 +70,8 @@ int main() {
             cout << "OpenAddressing;" << size << ";remove;" << removeTime << "\n";
         }
 
-        // ==== CHAINING ====
         {
-            HashChain table;
+            HashChain table(size);
             auto insertTime = measureAverageTime([&]() {
                 for (int i = 0; i < size; ++i)
                     table.insert(data.keys[i], data.values[i]);
