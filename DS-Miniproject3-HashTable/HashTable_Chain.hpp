@@ -4,8 +4,6 @@
 class HashChain : public HashTable
 {
 private:
-    static const int TABLE_SIZE = 10;
-
     struct Node
     {
         int key;
@@ -13,12 +11,13 @@ private:
         Node* next;
     };
 
-    Node* table[TABLE_SIZE];
+    int tableSize;
+    Node** table;
 
     int hash(int key);
 
 public:
-    HashChain();
+    HashChain(int size = 10);
     ~HashChain();
 
     void insert(int key, int elem) override;
