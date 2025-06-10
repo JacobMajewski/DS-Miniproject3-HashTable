@@ -4,8 +4,6 @@
 class HashOpenAddressing : public HashTable
 {
 private:
-    static const int TABLE_SIZE = 10;
-
     struct Entry
     {
         int key;
@@ -14,13 +12,16 @@ private:
         bool isDeleted;
     };
 
-    Entry table[TABLE_SIZE];
+    int tableSize;
+    Entry* table;
 
     int hash(int key);
     int probe(int key, int i);
 
 public:
-    HashOpenAddressing();
+    HashOpenAddressing(int size = 10);
+    ~HashOpenAddressing();
+
     void insert(int key, int elem) override;
     int remove(int key) override;
 };
