@@ -130,11 +130,15 @@
     <ClCompile Include="AVL_tree.cpp" />
     <ClCompile Include="DS-Miniproject3-HashTable.cpp" />
     <ClCompile Include="HashTable_AVL.cpp" />
+    <ClCompile Include="HashTable_Chain.cpp" />
+    <ClCompile Include="HashTable_OpenAddressing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVL_tree.hpp" />
     <ClInclude Include="HashTable.hpp" />
     <ClInclude Include="HashTable_AVL.hpp" />
+     <ClCompile Include="HashTable_Chain.hpp" />
+    <ClCompile Include="HashTable_OpenAddressing.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
