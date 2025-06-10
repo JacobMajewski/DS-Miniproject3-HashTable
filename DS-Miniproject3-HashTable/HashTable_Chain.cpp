@@ -1,14 +1,15 @@
 #include "HashTable_Chain.hpp"
 
-HashChain::HashChain()
+HashChain::HashChain(int size) : tableSize(size)
 {
-    for (int i = 0; i < TABLE_SIZE; ++i)
+    table = new Node * [tableSize];
+    for (int i = 0; i < tableSize; ++i)
         table[i] = nullptr;
 }
 
 HashChain::~HashChain()
 {
-    for (int i = 0; i < TABLE_SIZE; ++i)
+    for (int i = 0; i < tableSize; ++i)
     {
         Node* curr = table[i];
         while (curr)
@@ -18,11 +19,12 @@ HashChain::~HashChain()
             delete tmp;
         }
     }
+    delete[] table;
 }
 
 int HashChain::hash(int key)
 {
-    return key % TABLE_SIZE;
+    return key % tableSize;
 }
 
 void HashChain::insert(int key, int elem)
