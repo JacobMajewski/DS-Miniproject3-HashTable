@@ -51,7 +51,7 @@ long long averageInsertTime_Open(int size, const TestData& data, int prefill) {
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
-    return total_time / (NUM_TESTS * to_insert);
+    return total_time / NUM_TESTS;
 }
 
 long long averageRemoveTime_Open(int size, const TestData& data, int prefill) {
@@ -66,7 +66,7 @@ long long averageRemoveTime_Open(int size, const TestData& data, int prefill) {
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
-    return total_time / (NUM_TESTS * prefill);
+    return total_time / NUM_TESTS;
 }
 
 long long averageInsertTime_Chain(int size, const TestData& data, int prefill) {
@@ -81,7 +81,7 @@ long long averageInsertTime_Chain(int size, const TestData& data, int prefill) {
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
-    return total_time / (NUM_TESTS* to_insert);
+    return total_time / NUM_TESTS;
 }
 
 long long averageRemoveTime_Chain(int size, const TestData& data, int prefill) {
@@ -96,7 +96,7 @@ long long averageRemoveTime_Chain(int size, const TestData& data, int prefill) {
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
-    return total_time / (NUM_TESTS * prefill);
+    return total_time / NUM_TESTS ;
 }
 
 long long averageInsertTime_AVL(int size, const TestData& data, int prefill) {
@@ -111,7 +111,7 @@ long long averageInsertTime_AVL(int size, const TestData& data, int prefill) {
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
-    return total_time / (NUM_TESTS* to_insert);
+    return total_time / NUM_TESTS;
 }
 
 long long averageRemoveTime_AVL(int size, const TestData& data, int prefill) {
@@ -126,7 +126,7 @@ long long averageRemoveTime_AVL(int size, const TestData& data, int prefill) {
         auto end = high_resolution_clock::now();
         total_time += duration_cast<nanoseconds>(end - start).count();
     }
-    return total_time / (NUM_TESTS * prefill);
+    return total_time /NUM_TESTS;
 }
 
 int main() {

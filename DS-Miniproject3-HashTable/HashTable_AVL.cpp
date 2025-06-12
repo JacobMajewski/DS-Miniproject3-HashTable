@@ -65,11 +65,12 @@ void HashTable_AVL::insert(int key, int elem)
     check_resize();
 }
 
-int HashTable_AVL::remove(int key)
-{
+int HashTable_AVL::remove(int key) {
     size_t index = hash(key);
-    table[index].remove(key);
-    size--;
-    check_resize();
-    return 0;
+    bool removed = table[index].remove(key);
+    if (removed) {
+        size--;
+        check_resize();
+    }
+    return removed ? 1 : 0;
 }

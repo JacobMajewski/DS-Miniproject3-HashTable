@@ -92,20 +92,20 @@ std::unique_ptr<Node> AVLTree::remove(std::unique_ptr<Node> node, int key, bool&
             return node->left ? std::move(node->left) : std::move(node->right);
         }
 
-        // heir would be funnier :c
+        // Find successor
         Node* successor = node->right.get();
         while (successor->left) successor = successor->left.get();
 
         node->key = successor->key;
         node->value = successor->value;
 
-        // prince is dead, long live prince?
-        bool dummy;
+        bool dummy = false;
         node->right = remove(std::move(node->right), successor->key, dummy);
     }
 
     return balance(std::move(node));
 }
+
 
 bool AVLTree::contains(const Node* node, int key) const {
     if (!node) return false;
